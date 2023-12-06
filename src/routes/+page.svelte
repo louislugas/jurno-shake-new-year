@@ -1,5 +1,8 @@
+<script context="module">
+  import Device from 'svelte-device-info'
+</script>
+
 <script>
-	import { invalidateAll } from "$app/navigation";
 	import { onMount } from "svelte";
 
 	let sec = 30
@@ -13,6 +16,8 @@
 	let showScore = 0
 	let width, height, y, by
 	let showRestart = false
+	let mobile = false
+	let ready = false
 
 	function start() {
 		startShake = true
@@ -46,6 +51,8 @@
 	onMount(() => {
 		y=height-(width/25*2)
 		by=height/2
+		mobile = Device.isMobile
+		ready = true
 	})
 
 	$: if (step == 1) {
@@ -77,8 +84,14 @@
 </script>
 
 <svelte:window on:devicemotion={sec > 0 && startShake && step == 0 ? handleAcl : null}></svelte:window>
+<svelte:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="HandheldFriendly" content="true" />
+</svelte:head>
 
 <section bind:clientWidth={width} bind:clientHeight={height}>
+{#if ready}
+{#if mobile}
 	{#if step == 0}
 		<div>
 			<img 
@@ -87,18 +100,11 @@
 				src="./images/soda-can-01.svg" alt="kaleng">
 		</div>
 		<div style:z-index="2">
-			{#if startShake && avgXYZ < 0.2}
+			{#if startShake && avgXYZ == 0}
 			<h1 class="warning">SHAKE YOUR PHONE</h1>
 			{/if}
 		</div>
-
-		<!-- <p>x: {distX.toFixed(2)}</p>
-		<p>y: {distY.toFixed(2)}</p>
-		<p>z: {distZ.toFixed(2)}</p> -->
-
-		<!-- <h1>score:<br>{total.toFixed(2)}</h1> -->
-		<!-- <div class="bar" style:width="{total}px"></div> -->
-
+		
 		<h1 class="timer">time:<br>{sec}</h1>
 		{#if !startShake}
 			<button on:click={start}>START</button>
@@ -143,6 +149,10 @@
 			<button on:click={restart}>RESTART</button>
 		{/if}
 	{/if}
+{:else}
+	<h1>Play this game on your mobile phone</h1>
+{/if}
+{/if}
 </section>
 
 
