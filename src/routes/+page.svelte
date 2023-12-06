@@ -1,11 +1,18 @@
 <script>
+	import { invalidateAll } from "$app/navigation";
+	import { onMount } from "svelte";
+
 	let sec = 30
 	let tempX = 0, tempY = 0, tempZ = 0
 	let distX = 0, distY = 0, distZ = 0
 	let avgXYZ = 0, total = 0
-	let countdown
+	let countdown, scoreInterval
 	let startShake = false
 	let step = 0
+	let endScore = 0
+	let showScore = 0
+	let width, height, y, by
+	let showRestart = false
 
 	function start() {
 		startShake = true
@@ -18,8 +25,6 @@
 			}
 			}, 1000)
 	}
-
-	
 
 	// @ts-ignore
 	function handleAcl(event) {
@@ -37,14 +42,54 @@
 		tempY = event.accelerationIncludingGravity.y
 		tempZ = event.accelerationIncludingGravity.z
 	}
+
+	onMount(() => {
+		y=height-(width/25*2)
+		by=height/2
+	})
+
+	$: if (step == 1) {
+		startShake = false
+		endScore = Math.round(total)
+		if (endScore != 0) {
+			setTimeout(() => {
+				y=height/3
+				scoreInterval = setInterval(() => {
+					if (showScore < endScore) {
+						showScore++
+						by++
+					} else {
+						clearInterval(scoreInterval)
+						setTimeout(() => {
+							showRestart = true
+						},1000)
+					}
+				},200)
+			},500)
+		}
+		
+		
+	}
+
+	function restart() {
+		location.reload()
+	}
 </script>
 
-<svelte:window on:devicemotion={sec > 0 && startShake ? handleAcl : null}></svelte:window>
+<svelte:window on:devicemotion={sec > 0 && startShake && step == 0 ? handleAcl : null}></svelte:window>
 
-<section>
+<section bind:clientWidth={width} bind:clientHeight={height}>
 	{#if step == 0}
 		<div>
-		<img src="./images/soda-can-01.svg" alt="kaleng">
+			<img 
+				style:transform={avgXYZ > 1 ? `translate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px,${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px)rotate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}deg)
+				` : `translate(0,0) rotate(0deg)` }
+				src="./images/soda-can-01.svg" alt="kaleng">
+		</div>
+		<div style:z-index="2">
+			{#if startShake && avgXYZ < 0.2}
+			<h1 class="warning">SHAKE YOUR PHONE</h1>
+			{/if}
 		</div>
 
 		<!-- <p>x: {distX.toFixed(2)}</p>
@@ -54,19 +99,89 @@
 		<!-- <h1>score:<br>{total.toFixed(2)}</h1> -->
 		<!-- <div class="bar" style:width="{total}px"></div> -->
 
-		<h1 id="timer">time:<br>{sec}</h1>
+		<h1 class="timer">time:<br>{sec}</h1>
 		{#if !startShake}
 			<button on:click={start}>START</button>
 		{/if}
 	{:else if step == 1}
-		<h1>your score:<br>{total.toFixed(2)}</h1>
+		<svg width="100%" height="100%">
+			<rect 
+				style:transition-duration="{endScore/2}ms"
+				width={width/25} 
+				height={width/25*2} 
+				x={width/2-(width/25/2)} 
+				y={y}
+				fill="#5078d1"></rect>
+			<rect
+				style:transition-duration="{endScore/2}ms"
+				width={width/40} 
+				height={height} 
+				x={width/2-(width/40/2)} 
+				y={y+(width/25*2)}
+				fill="#f4bd40">
+			</rect>
+			<path
+				d="
+					M0,{by} 
+					l {width/5},0
+					l 0,{height/6}
+					l {width/5},0
+					l 0,{-height/10}
+					l {width/5},0
+					l 0,{height/12}
+					l {width/5},0
+					l 0,{-height/8}
+					l {width/5},0
+					l 0,{height}
+					l {-width},0"
+				fill="white"
+				opacity="0.2"
+			></path>
+		</svg>
+		<h1>your score:<br>{showScore.toLocaleString("de-DE")}</h1>
+		{#if showRestart}
+			<button on:click={restart}>RESTART</button>
+		{/if}
 	{/if}
 </section>
 
 
 <style>
+	:global(body) {
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		background-color: rgb(22, 18, 48);
+	}
+	svg {
+		position: absolute;
+		border: 1px solid;
+		z-index:-1;
+	}
+	path {
+		transition: all 200ms linear;
+	}
+	rect {
+		transition:all cubic-bezier(0.25, 1, 0.5, 1);
+	}
 	div {
 		position: absolute;
+		width:100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index:-1;
+	}
+	img {
+		width:50%;
+		max-width:250px;
+	}
+	.timer {
+		color:black;
+	}
+	.warning {
+		color:black;
+		background-color:red;
 	}
 	.bar {
 		width:0px;
@@ -78,6 +193,7 @@
 		margin: 0;
 		font-family: monospace;
 		text-align: center;
+		color:whitesmoke;
 	}
 	button {
 		font-size:3rem;
