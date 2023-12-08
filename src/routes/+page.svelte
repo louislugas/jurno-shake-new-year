@@ -158,86 +158,82 @@
 <section bind:clientWidth={width} bind:clientHeight={height}>
 {#if ready}
 	{#if mobile}
-		{#if isSafari}
-			<h1>You're using Safari, use another browser (Chrome, etc)</h1>
-		{:else}
-			{#if step == 0}
-				<div 
-					style:flex-direction="column"
-					style:z-index="3"
-				>
-					<h3>Instruction:</h3>
-					<h3>Shake your phone!</h3>
-					<img src="./images/shake-frame.gif" alt="instruction">
-					<button on:click={startIntro}>PLAY</button>
-				</div>
-			{:else if step == 1}
-				<div>
-					<img 
-						style:transform={avgXYZ > 1 ? `translate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px,${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px)rotate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}deg)
-						` : `translate(0,0) rotate(0deg)` }
-						src="./images/soda-can-01.svg" alt="kaleng">
-				</div>
-				<div style:z-index="2">
-					{#if startShake && avgXYZ == 0}
-					<h1 class="warning">SHAKE YOUR PHONE</h1>
-					{/if}
-				</div>
-				
-				<h1 class="timer">time:<br>{sec}</h1>
-				{#if !startShake}
-					<button on:click={start}>START</button>
+		{#if step == 0}
+			<div 
+				style:flex-direction="column"
+				style:z-index="3"
+			>
+				<h3>Instruction:</h3>
+				<h3>Shake your phone!</h3>
+				<img src="./images/shake-frame.gif" alt="instruction">
+				<button on:click={startIntro}>PLAY</button>
+			</div>
+		{:else if step == 1}
+			<div>
+				<img 
+					style:transform={avgXYZ > 1 ? `translate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px,${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px)rotate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}deg)
+					` : `translate(0,0) rotate(0deg)` }
+					src="./images/soda-can-01.svg" alt="kaleng">
+			</div>
+			<div style:z-index="2">
+				{#if startShake && avgXYZ == 0}
+				<h1 class="warning">SHAKE YOUR PHONE</h1>
 				{/if}
-			{:else if step == 2}
-				<svg width="100%" height="100%">
-					{#if !fireWorks}
-					<rect 
-						style:transition-duration="{endScore/2}ms"
-						width={width/25} 
-						height={width/25*2} 
-						x={width/2-(width/25/2)} 
-						y={y}
-						fill="#5078d1"></rect>
-					{/if}
-					<rect
-						style:transition-duration="{endScore/2}ms"
-						width={width/40} 
-						height={height} 
-						x={width/2-(width/40/2)} 
-						y={y+(width/25*2)}
-						fill="#f4bd40">
-				</rect>
-					{#each Array(8) as _, i}
-						<circle 
-							opacity={fireWorks ? 1 : 0}
-							cx={(width/2-(width/25/2))+Math.sin(degToRad(360/8*i))*distance} 
-							cy={cy+Math.cos(degToRad(360/8*i))*distance} 
-							r={radius}
-							fill="white"></circle>
-					{/each}
+			</div>
+			
+			<h1 class="timer">time:<br>{sec}</h1>
+			{#if !startShake}
+				<button on:click={start}>START</button>
+			{/if}
+		{:else if step == 2}
+			<svg width="100%" height="100%">
+				{#if !fireWorks}
+				<rect 
+					style:transition-duration="{endScore/2}ms"
+					width={width/25} 
+					height={width/25*2} 
+					x={width/2-(width/25/2)} 
+					y={y}
+					fill="#5078d1"></rect>
+				{/if}
+				<rect
+					style:transition-duration="{endScore/2}ms"
+					width={width/40} 
+					height={height} 
+					x={width/2-(width/40/2)} 
+					y={y+(width/25*2)}
+					fill="#f4bd40">
+			</rect>
+				{#each Array(8) as _, i}
+					<circle 
+						opacity={fireWorks ? 1 : 0}
+						cx={(width/2-(width/25/2))+Math.sin(degToRad(360/8*i))*distance} 
+						cy={cy+Math.cos(degToRad(360/8*i))*distance} 
+						r={radius}
+						fill="white"></circle>
+				{/each}
 
-					<path
-						d="
-							M0,{by} 
-							l {width/5},0
-							l 0,{height/6}
-							l {width/5},0
-							l 0,{-height/10}
-							l {width/5},0
-							l 0,{height/12}
-							l {width/5},0
-							l 0,{-height/8}
-							l {width/5},0
-							l 0,{height}
-							l {-width},0"
-						fill="white"
-						opacity="0.2"
-					></path>
-				</svg>
-				<h1>your score:<br>{showScore.toLocaleString("de-DE")}</h1>
-				{#if showRestart}
-					<button on:click={restart}>RESTART</button>
-				{/if}
+				<path
+					d="
+						M0,{by} 
+						l {width/5},0
+						l 0,{height/6}
+						l {width/5},0
+						l 0,{-height/10}
+						l {width/5},0
+						l 0,{height/12}
+						l {width/5},0
+						l 0,{-height/8}
+						l {width/5},0
+						l 0,{height}
+						l {-width},0"
+					fill="white"
+					opacity="0.2"
+				></path>
+			</svg>
+			<h1>your score:<br>{showScore.toLocaleString("de-DE")}</h1>
+			{#if showRestart}
+				<button on:click={restart}>RESTART</button>
 			{/if}
 		{/if}
 	{:else}
