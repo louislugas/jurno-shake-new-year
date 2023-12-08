@@ -10,15 +10,11 @@
 	let tempX = 0, tempY = 0, tempZ = 0
 	let distX = 0, distY = 0, distZ = 0
 	let avgXYZ = 0, total = 0
-	// @ts-ignore
 	let startShake = false
-	// @ts-ignore
-	let width, height, y, by
 	let mobile = false
 	let ready = false
     let isSafari = false
 
-	// @ts-ignore
 	function handleAcl(event) {
 		distX = event.accelerationIncludingGravity.x - tempX
 		distY = event.accelerationIncludingGravity.y - tempY
@@ -36,10 +32,6 @@
 	}
 
 	onMount(() => {
-		// @ts-ignore
-		y=height-(width/25*2)
-		// @ts-ignore
-		by=height/2
 		mobile = Device.isMobile
 		ready = true
         startShake = true
@@ -64,7 +56,7 @@
 	<meta name="HandheldFriendly" content="true" />
 </svelte:head>
 
-<section bind:clientWidth={width} bind:clientHeight={height}>
+<section>
 {#if ready}
 	{#if mobile}
 		<h1>Safari Debugger</h1>

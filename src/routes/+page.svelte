@@ -1,5 +1,4 @@
 <script context="module">
-	// @ts-nocheck
   import Device from 'svelte-device-info'
 </script>
 
@@ -13,23 +12,35 @@
 	let tempX = 0, tempY = 0, tempZ = 0
 	let distX = 0, distY = 0, distZ = 0
 	let avgXYZ = 0, total = 0
-	// @ts-ignore
 	let countdown, scoreInterval
 	let startShake = false
 	let step = 0
 	let endScore = 0
 	let showScore = 0
-	// @ts-ignore
 	let width, height, y, by
 	let showRestart = false
 	let mobile = false
 	let ready = false
 	let fireWorks = false
+	let safariMotion = false
 
 	let cx, cy, radius = 4, distance = 0
 
 	function startIntro() {
-		step = 1
+		if (typeof DeviceMotionEvent.requestPermission === 'function') {
+			DeviceMotionEvent.requestPermission()
+				.then(permissionState => {
+					if (permissionState === 'granted') {
+						safariMotion = true
+						step = 1
+					}
+				})
+				.catch(console.error);
+		} else {
+			safariMotion = true
+			step = 1
+		// handle regular non iOS 13+ devices
+		}
 	}
 
 	function degToRad(deg) {
@@ -42,7 +53,6 @@
 			if (sec > 0) {
 				sec--
 			} else {
-				// @ts-ignore
 				clearInterval(countdown)
 				step = 2
 			}
@@ -50,21 +60,17 @@
 	}
 
 	$: if (step == 2) {
-		// startShowScore()
 		startShake = false
 		endScore = Math.round(total)
 		if (endScore != 0) {
 			setTimeout(() => {
-				// @ts-ignore
 				y=height/3
 				cy=y
 				scoreInterval = setInterval(() => {
 					if (showScore < endScore) {
 						showScore++
-						// @ts-ignore
 						by++
 					} else {
-						// @ts-ignore
 						clearInterval(scoreInterval)
 						fireWorks = true
 						distance = width/2
@@ -77,7 +83,6 @@
 		}
 	}
 
-	// @ts-ignore
 	function handleAcl(event) {
 		distX = event.accelerationIncludingGravity.x - tempX
 		distY = event.accelerationIncludingGravity.y - tempY
@@ -95,9 +100,7 @@
 	}
 
 	onMount(() => {
-		// @ts-ignore
 		y=height-(width/25*2)
-		// @ts-ignore
 		by=height/2
 		mobile = Device.isMobile
 		ready = true
@@ -120,16 +123,13 @@
 		endScore = Math.round(total)
 		if (endScore != 0) {
 			setTimeout(() => {
-				// @ts-ignore
 				y=height/3
 				cy=y
 				scoreInterval = setInterval(() => {
 					if (showScore < endScore) {
 						showScore++
-						// @ts-ignore
 						by++
 					} else {
-						// @ts-ignore
 						clearInterval(scoreInterval)
 						distance = 0
 						setTimeout(() => {
@@ -149,7 +149,7 @@
 	}
 </script>
 
-<svelte:window on:devicemotion={sec > 0 && startShake && step == 1 ? handleAcl : null}></svelte:window>
+<svelte:window on:devicemotion={sec > 0 && startShake && safariMotion && step == 1 ? handleAcl : null}></svelte:window>
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="HandheldFriendly" content="true" />
@@ -285,11 +285,6 @@
 	}
 	.warning {
 		color:black;
-		background-color:red;
-	}
-	.bar {
-		width:0px;
-		height:50px;
 		background-color:red;
 	}
 	h3 {
