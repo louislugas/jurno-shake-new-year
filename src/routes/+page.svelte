@@ -5,6 +5,7 @@
 <script>
 	import { onMount } from "svelte";
 	import { browser } from '$app/environment';
+	import { imgurl } from '$lib/imgurl';
 
 	let isSafari = false
 
@@ -25,6 +26,7 @@
 	let safariMotion = false
 	let tickAudio, tickAudio2
 	let showStartSec = false
+	let selector = 0
 
 	let cx, cy, radius = 4, distance = 0
 
@@ -103,7 +105,7 @@
 					} else {
 						clearInterval(scoreInterval)
 						fireWorks = true
-						distance = width/2
+						distance = width/3
 						setTimeout(() => {
 							showRestart = true
 						},1000)
@@ -130,13 +132,6 @@
 	}
 
 	onMount(() => {
-		y=height-(width/25*2)
-		by=height/2
-		mobile = Device.isMobile
-		ready = true
-		tickAudio = new Audio("./audio/timer-01.mp3")
-		tickAudio2 = new Audio("./audio/timer-02.mp3")
-
 		if (browser) {
 			let ua = window.navigator.userAgent.toLowerCase(); 
 
@@ -148,33 +143,41 @@
 				}
 			}
 		}
+
+		y=height-(width/25*2)
+		by=height/2
+		mobile = Device.isMobile
+		tickAudio = new Audio("./audio/timer-01.mp3")
+		tickAudio2 = new Audio("./audio/timer-02.mp3")
+		ready = true
+		selector = Math.round(Math.random()*3)
 	})
 
-	function startShowScore() {
-		startShake = false
-		endScore = Math.round(total)
-		if (endScore != 0) {
-			setTimeout(() => {
-				y=height/3
-				cy=y
-				scoreInterval = setInterval(() => {
-					if (showScore < endScore) {
-						showScore++
-						by++
-					} else {
-						clearInterval(scoreInterval)
-						distance = 0
-						setTimeout(() => {
-							distance = width/3
-						},200)
-						setTimeout(() => {
-							showRestart = true
-						},1000)
-					}
-				},200)
-			},500)
-		}
-	}
+	// function startShowScore() {
+	// 	startShake = false
+	// 	endScore = Math.round(total)
+	// 	if (endScore != 0) {
+	// 		setTimeout(() => {
+	// 			y=height/3
+	// 			cy=y
+	// 			scoreInterval = setInterval(() => {
+	// 				if (showScore < endScore) {
+	// 					showScore++
+	// 					by++
+	// 				} else {
+	// 					clearInterval(scoreInterval)
+	// 					distance = 0
+	// 					setTimeout(() => {
+	// 						distance = width/3
+	// 					},200)
+	// 					setTimeout(() => {
+	// 						showRestart = true
+	// 					},1000)
+	// 				}
+	// 			},200)
+	// 		},500)
+	// 	}
+	// }
 
 	function restart() {
 		location.reload()
@@ -185,11 +188,14 @@
 <svelte:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="HandheldFriendly" content="true" />
+	{#each imgurl as url}
+		<link rel="preload" href={url} as="image" />
+	{/each}
 </svelte:head>
 
 <section bind:clientWidth={width} bind:clientHeight={height}>
 {#if ready}
-	<!-- {#if mobile} -->
+	{#if mobile}
 		{#if step == 0}
 			<div 
 				style:flex-direction="column"
@@ -205,11 +211,11 @@
 				<img 
 					style:transform={avgXYZ > 1 ? `translate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px,${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}px)rotate(${avgXYZ*5 * (Math.round(Math.random()) == 1 ? 1 : -1 )}deg)
 					` : `translate(0,0) rotate(0deg)` }
-					src="./images/soda-can-01.svg" alt="kaleng">
+					src={imgurl[selector]} alt="kaleng">
 			</div>
-			<div style:z-index="2">
+			<div style:z-index="10">
 				{#if startSec == 0}
-				<h1 class="warning">SHAKE YOUR PHONE</h1>
+				<h1 style:z-index="10" class="warning">SHAKE YOUR PHONE</h1>
 				{/if}
 			</div>
 			{#if startShake}
@@ -224,33 +230,19 @@
 				
 			{/if}
 		{:else if step == 2}
+			<div class="gradient"></div>
 			<svg width="100%" height="100%">
-				{#if !fireWorks}
-				<rect 
-					style:transition-duration="{endScore/2}ms"
-					width={width/25} 
-					height={width/25*2} 
-					x={width/2-(width/25/2)} 
-					y={y}
-					fill="#5078d1"></rect>
-				{/if}
-				<rect
-					style:transition-duration="{endScore/2}ms"
-					width={width/40} 
-					height={height} 
-					x={width/2-(width/40/2)} 
-					y={y+(width/25*2)}
-					fill="#f4bd40">
-			</rect>
-				{#each Array(8) as _, i}
-					<circle 
-						opacity={fireWorks ? 1 : 0}
-						cx={(width/2-(width/25/2))+Math.sin(degToRad(360/8*i))*distance} 
-						cy={cy+Math.cos(degToRad(360/8*i))*distance} 
-						r={radius}
-						fill="white"></circle>
-				{/each}
-
+				<g transform="translate(0 {by/100})">
+					{#each Array(15) as _,i}
+						<circle 
+							class="star"
+							cx={Math.random()*width} 
+							cy={Math.random()*height}
+							r={2}
+							fill="white"></circle>
+					{/each}
+				</g>
+					
 				<path
 					d="
 						M0,{by} 
@@ -265,18 +257,56 @@
 						l {width/5},0
 						l 0,{height}
 						l {-width},0"
-					fill="white"
-					opacity="0.2"
+					fill="#454159"
 				></path>
+
+				{#if !fireWorks}
+					<rect 
+						style:transition-duration="{endScore/2}ms"
+						width={width/25} 
+						height={width/25*2} 
+						x={width/2-(width/25/2)} 
+						y={y}
+						fill="{
+							selector == 0 ? "#e74b4c" :
+							selector == 1 ? "#51aade" : 
+							selector == 2 ? "#72be44" :
+							selector == 3 ? "#e98a4a" :
+							"#e74b4c"
+
+						}"></rect>
+				{/if}
+				<rect
+					style:transition-duration="{endScore/2}ms"
+					width={width/40} 
+					height={height} 
+					x={width/2-(width/40/2)} 
+					y={y+(width/25*2)}
+					fill="#f4bd40">
+				</rect>
+				{#each Array(8) as _, i}
+					<circle 
+						class="spark"
+						opacity={fireWorks ? 1 : 0}
+						cx={(width/2)+Math.sin(degToRad(360/8*i))*distance} 
+						cy={cy+Math.cos(degToRad(360/8*i))*distance} 
+						r={radius}
+						fill="white">
+					</circle>
+				{/each}
+				
 			</svg>
+			
 			<h1>your score:<br>{showScore.toLocaleString("de-DE")}</h1>
 			{#if showRestart}
 				<button on:click={restart}>RESTART</button>
 			{/if}
 		{/if}
-	<!-- {:else}
+	{:else}
 		<h1>Play this game on your mobile phone</h1>
-	{/if} -->
+	{/if}
+<!-- {:else}
+	<h1>Loading...</h1> -->
 {/if}
 </section>
 
@@ -291,7 +321,14 @@
 	svg {
 		position: absolute;
 		border: 1px solid;
-		z-index:-1;
+		z-index:2;
+	}
+	.gradient {
+		width:100%;
+		height:100%;
+		background: linear-gradient(#171331, #242155);
+		position: absolute;
+		z-index:0;
 	}
 	path {
 		transition: all 200ms linear;
@@ -299,8 +336,8 @@
 	rect {
 		transition:all cubic-bezier(0.25, 1, 0.5, 1);
 	}
-	circle {
-		transition:all cubic-bezier(0.25, 1, 0.5, 1);
+	.spark {
+		transition:all 500ms cubic-bezier(0.25, 1, 0.5, 1);
 	}
 	div {
 		position: absolute;
@@ -334,6 +371,7 @@
 		font-family: monospace;
 		text-align: center;
 		color:whitesmoke;
+		z-index:5;
 	}
 	button {
 		font-size:3rem;
