@@ -8,7 +8,7 @@
 
 	let isSafari = false
 
-	let sec = 30
+	let sec = 15, startSec = 4
 	let tempX = 0, tempY = 0, tempZ = 0
 	let distX = 0, distY = 0, distZ = 0
 	let avgXYZ = 0, total = 0
@@ -23,6 +23,8 @@
 	let ready = false
 	let fireWorks = false
 	let safariMotion = false
+	let tickAudio, tickAudio2
+	let showStartSec = false
 
 	let cx, cy, radius = 4, distance = 0
 
@@ -47,16 +49,44 @@
 		return deg / (180/Math.PI)
 	}
 
-	function start() {
-		startShake = true
+	function timeCountDown() {
 		countdown = setInterval(() => {
 			if (sec > 0) {
 				sec--
+				if (sec <=3 && sec > 0) {
+					tickAudio.play()
+				} else if (sec == 0) {
+					tickAudio2.play()
+				}
 			} else {
 				clearInterval(countdown)
 				step = 2
 			}
 		}, 1000)
+	}
+
+	function start() {
+		showStartSec = true
+		startSec--
+		tickAudio.play()
+		setInterval(() => {
+			if (startSec > 1) {
+				startSec--
+				tickAudio.play()
+			} else if (startSec == 1) {
+				startSec--
+				tickAudio2.play()
+			} else if (startSec == 0) {
+				startSec--
+				startShake = true
+			}
+		},1000)
+
+		setTimeout(() => {
+			startShake = true
+			timeCountDown()
+		},4000)
+		
 	}
 
 	$: if (step == 2) {
@@ -104,6 +134,8 @@
 		by=height/2
 		mobile = Device.isMobile
 		ready = true
+		tickAudio = new Audio("./audio/timer-01.mp3")
+		tickAudio2 = new Audio("./audio/timer-02.mp3")
 
 		if (browser) {
 			let ua = window.navigator.userAgent.toLowerCase(); 
@@ -157,7 +189,7 @@
 
 <section bind:clientWidth={width} bind:clientHeight={height}>
 {#if ready}
-	{#if mobile}
+	<!-- {#if mobile} -->
 		{#if step == 0}
 			<div 
 				style:flex-direction="column"
@@ -176,14 +208,20 @@
 					src="./images/soda-can-01.svg" alt="kaleng">
 			</div>
 			<div style:z-index="2">
-				{#if startShake && avgXYZ == 0}
+				{#if startSec == 0}
 				<h1 class="warning">SHAKE YOUR PHONE</h1>
 				{/if}
 			</div>
-			
+			{#if startShake}
 			<h1 class="timer">time:<br>{sec}</h1>
+			{/if}
 			{#if !startShake}
-				<button on:click={start}>START</button>
+				{#if showStartSec}
+					<h1 class="timer">{startSec}</h1>
+				{:else}
+					<button on:click={start}>START</button>
+				{/if}
+				
 			{/if}
 		{:else if step == 2}
 			<svg width="100%" height="100%">
@@ -236,9 +274,9 @@
 				<button on:click={restart}>RESTART</button>
 			{/if}
 		{/if}
-	{:else}
+	<!-- {:else}
 		<h1>Play this game on your mobile phone</h1>
-	{/if}
+	{/if} -->
 {/if}
 </section>
 
