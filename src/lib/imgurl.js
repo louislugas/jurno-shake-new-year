@@ -4,4 +4,5 @@ export let imgurl = [
     "./images/soda-can-03.svg",
     "./images/soda-can-04.svg",
     "./images/shake-frame.gif",
+    "./images/nipis-madu.svg"
 ]

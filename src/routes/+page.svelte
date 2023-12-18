@@ -151,7 +151,8 @@
 		tickAudio = new Audio("./audio/timer-01.mp3")
 		tickAudio2 = new Audio("./audio/timer-02.mp3")
 		ready = true
-		selector = Math.round(Math.random()*3)
+		// selector = Math.round(Math.random()*3)
+		selector = 5
 	})
 
 	function restart() {
@@ -264,6 +265,7 @@
 							selector == 1 ? "#51aade" : 
 							selector == 2 ? "#72be44" :
 							selector == 3 ? "#e98a4a" :
+							selector == 5 ? "lime" :
 							"#e74b4c"
 						}"
 						opacity={fireWorks ? 0 : 1 }></rect>
