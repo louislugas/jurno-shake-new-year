@@ -106,9 +106,10 @@
 						clearInterval(scoreInterval)
 						fireWorks = true
 						distance = width/3
+						
 						setTimeout(() => {
 							showRestart = true
-						},1000)
+						},500)
 					}
 				},200)
 			},500)
@@ -152,32 +153,6 @@
 		ready = true
 		selector = Math.round(Math.random()*3)
 	})
-
-	// function startShowScore() {
-	// 	startShake = false
-	// 	endScore = Math.round(total)
-	// 	if (endScore != 0) {
-	// 		setTimeout(() => {
-	// 			y=height/3
-	// 			cy=y
-	// 			scoreInterval = setInterval(() => {
-	// 				if (showScore < endScore) {
-	// 					showScore++
-	// 					by++
-	// 				} else {
-	// 					clearInterval(scoreInterval)
-	// 					distance = 0
-	// 					setTimeout(() => {
-	// 						distance = width/3
-	// 					},200)
-	// 					setTimeout(() => {
-	// 						showRestart = true
-	// 					},1000)
-	// 				}
-	// 			},200)
-	// 		},500)
-	// 	}
-	// }
 
 	function restart() {
 		location.reload()
@@ -234,12 +209,14 @@
 			<svg width="100%" height="100%">
 				<g transform="translate(0 {by/100})">
 					{#each Array(15) as _,i}
-						<circle 
+						<image
 							class="star"
-							cx={Math.random()*width} 
-							cy={Math.random()*height}
-							r={2}
-							fill="white"></circle>
+							x={Math.random()*width-5}
+							y={Math.random()*height-5}
+							width={8}
+							height={8}
+							href="./images/star-01.svg"
+						></image>
 					{/each}
 				</g>
 					
@@ -260,7 +237,22 @@
 					fill="#454159"
 				></path>
 
-				{#if !fireWorks}
+				<!-- {#if !fireWorks} -->
+					<defs>
+						<linearGradient id="ellipse" x1="0%" y1="100%" x2="0%" y2="0%">
+							<stop offset="50%" style="stop-color:white;stop-opacity:0" />
+							<stop offset="100%" style="stop-color:white;stop-opacity:0.8" />
+						</linearGradient>
+					</defs>
+					<ellipse
+						style:transition-duration="{endScore/2}ms"
+						cx={width/2}
+						cy={y+(width/22*3.5)}
+						rx={width/22+(y/15)}
+						ry={width/22*4}
+						fill="url(#ellipse)"
+						opacity={fireWorks ? 0 : 1 }
+					></ellipse>
 					<rect 
 						style:transition-duration="{endScore/2}ms"
 						width={width/25} 
@@ -273,16 +265,33 @@
 							selector == 2 ? "#72be44" :
 							selector == 3 ? "#e98a4a" :
 							"#e74b4c"
-
-						}"></rect>
-				{/if}
+						}"
+						opacity={fireWorks ? 0 : 1 }></rect>
+					<rect 
+						style:transition-duration="{endScore/2}ms"
+						width={width/25} 
+						height={width/25*2/12} 
+						x={width/2-(width/25/2)} 
+						y={y}
+						fill="#e5e5e5"
+						opacity={fireWorks ? 0 : 1 }></rect>
+					<rect 
+						style:transition-duration="{endScore/2}ms"
+						width={width/25} 
+						height={width/25*2/12} 
+						x={width/2-(width/25/2)} 
+						y={y+(width/25*2)-(width/25*2/12)}
+						fill="#e5e5e5"
+						opacity={fireWorks ? 0 : 1 }></rect>
+				<!-- {/if} -->
 				<rect
 					style:transition-duration="{endScore/2}ms"
 					width={width/40} 
 					height={height} 
 					x={width/2-(width/40/2)} 
 					y={y+(width/25*2)}
-					fill="#f4bd40">
+					fill="#f4bd40"
+					opacity={fireWorks ? 0 : 1 }>
 				</rect>
 				{#each Array(8) as _, i}
 					<circle 
@@ -299,7 +308,7 @@
 			
 			<h1>your score:<br>{showScore.toLocaleString("de-DE")}</h1>
 			{#if showRestart}
-				<button on:click={restart}>RESTART</button>
+				<button style:z-index="3" on:click={restart}>RESTART</button>
 			{/if}
 		{/if}
 	{:else}
@@ -333,7 +342,7 @@
 	path {
 		transition: all 200ms linear;
 	}
-	rect {
+	rect, ellipse {
 		transition:all cubic-bezier(0.25, 1, 0.5, 1);
 	}
 	.spark {
