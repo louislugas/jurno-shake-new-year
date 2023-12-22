@@ -1,0 +1,89 @@
+:root {
+	--dist:8px;
+    --blur:0px;
+    --shadow-color:white;
+    --text-color:black;
+}
+
+.text-shadow {
+	color:var(--text-color);
+	font-size:5rem;
+	text-shadow:
+        calc(var(--dist)*cos(0deg)) calc(var(--dist)*sin(0deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(5deg)) calc(var(--dist)*sin(5deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(10deg)) calc(var(--dist)*sin(10deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(15deg)) calc(var(--dist)*sin(15deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(20deg)) calc(var(--dist)*sin(20deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(25deg)) calc(var(--dist)*sin(25deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(30deg)) calc(var(--dist)*sin(30deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(35deg)) calc(var(--dist)*sin(35deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(40deg)) calc(var(--dist)*sin(40deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(45deg)) calc(var(--dist)*sin(45deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(50deg)) calc(var(--dist)*sin(50deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(55deg)) calc(var(--dist)*sin(55deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(60deg)) calc(var(--dist)*sin(60deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(65deg)) calc(var(--dist)*sin(65deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(70deg)) calc(var(--dist)*sin(70deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(75deg)) calc(var(--dist)*sin(75deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(80deg)) calc(var(--dist)*sin(80deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(85deg)) calc(var(--dist)*sin(95deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(90deg)) calc(var(--dist)*sin(100deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(95deg)) calc(var(--dist)*sin(105deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(110deg)) calc(var(--dist)*sin(110deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(115deg)) calc(var(--dist)*sin(115deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(120deg)) calc(var(--dist)*sin(120deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(125deg)) calc(var(--dist)*sin(125deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(130deg)) calc(var(--dist)*sin(130deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(135deg)) calc(var(--dist)*sin(135deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(140deg)) calc(var(--dist)*sin(140deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(145deg)) calc(var(--dist)*sin(145deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(150deg)) calc(var(--dist)*sin(150deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(155deg)) calc(var(--dist)*sin(155deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(160deg)) calc(var(--dist)*sin(160deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(165deg)) calc(var(--dist)*sin(165deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(170deg)) calc(var(--dist)*sin(170deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(175deg)) calc(var(--dist)*sin(175deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(180deg)) calc(var(--dist)*sin(180deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(185deg)) calc(var(--dist)*sin(185deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(190deg)) calc(var(--dist)*sin(190deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(195deg)) calc(var(--dist)*sin(195deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(200deg)) calc(var(--dist)*sin(200deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(205deg)) calc(var(--dist)*sin(205deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(210deg)) calc(var(--dist)*sin(210deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(215deg)) calc(var(--dist)*sin(215deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(220deg)) calc(var(--dist)*sin(220deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(225deg)) calc(var(--dist)*sin(225deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(230deg)) calc(var(--dist)*sin(230deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(235deg)) calc(var(--dist)*sin(235deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(240deg)) calc(var(--dist)*sin(240deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(245deg)) calc(var(--dist)*sin(245deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(250deg)) calc(var(--dist)*sin(250deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(255deg)) calc(var(--dist)*sin(255deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(260deg)) calc(var(--dist)*sin(260deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(265deg)) calc(var(--dist)*sin(265deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(270deg)) calc(var(--dist)*sin(270deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(275deg)) calc(var(--dist)*sin(275deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(280deg)) calc(var(--dist)*sin(280deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(285deg)) calc(var(--dist)*sin(285deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(290deg)) calc(var(--dist)*sin(290deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(295deg)) calc(var(--dist)*sin(295deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(300deg)) calc(var(--dist)*sin(300deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(305deg)) calc(var(--dist)*sin(305deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(310deg)) calc(var(--dist)*sin(310deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(315deg)) calc(var(--dist)*sin(315deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(320deg)) calc(var(--dist)*sin(320deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(325deg)) calc(var(--dist)*sin(325deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(330deg)) calc(var(--dist)*sin(330deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(335deg)) calc(var(--dist)*sin(335deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(340deg)) calc(var(--dist)*sin(340deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(345deg)) calc(var(--dist)*sin(345deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(350deg)) calc(var(--dist)*sin(350deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(355deg)) calc(var(--dist)*sin(355deg)) var(--blur) var(--shadow-color),
+        calc(var(--dist)*cos(360deg)) calc(var(--dist)*sin(360deg)) var(--blur) var(--shadow-color)
+}
+
+@media screen and (max-width:400px) and (orientation:portrait) {
+    :root {
+        --dist:4px;
+    }
+}
