@@ -461,7 +461,7 @@
 		margin: 0;
 		padding: 0;
 		overflow: hidden;
-		background-color: rgb(22, 18, 48);
+		background-color: #161230;
 	}
 	svg {
 		position: absolute;
@@ -558,7 +558,7 @@
 		font-size:4rem;
 	}
 	.warning {
-		color:red;
+		color:#e98a49;
 	}
 	h3 {
 		font-size:2rem;
